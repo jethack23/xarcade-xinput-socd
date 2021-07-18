@@ -19,7 +19,9 @@ namespace XArcade_XInput {
         ScpBus Bus;
         public bool IsRunning = false;
         public event System.EventHandler<ControllerManagerEventArgs> OnChange;
-        bool DidEmulateGuide = false;
+        // bool DidEmulateGuide = false;
+        bool SOCDlr = false;
+        bool SOCDdu = false;
 
         X360Controller[] controllers = new X360Controller[] {
             new X360Controller(),
@@ -81,11 +83,23 @@ namespace XArcade_XInput {
 
             next.Buttons |= Button;
 
-            // RB + Start = Guide
-            if (next.Buttons.HasFlag(X360Buttons.RightBumper | X360Buttons.Start)) {
-                next.Buttons &= ~(X360Buttons.RightBumper | X360Buttons.Start);
-                next.Buttons |= X360Buttons.Logo;
-                DidEmulateGuide = true;
+            // // RB + Start = Guide
+            // if (next.Buttons.HasFlag(X360Buttons.RightBumper | X360Buttons.Start)) {
+            //     next.Buttons &= ~(X360Buttons.RightBumper | X360Buttons.Start);
+            //     next.Buttons |= X360Buttons.Logo;
+            //     DidEmulateGuide = true;
+            // }
+
+            // SOCD Cleaner : left+right
+            if (SOCDlr | next.Buttons.HasFlag(X360Buttons.Left | X360Buttons.Right)) {
+                next.Buttons &= ~(X360Buttons.Left | X360Buttons.Right);
+                SOCDlr = true;
+            }
+
+            // SOCD Cleaner : down+up
+            if (SOCDdu | next.Buttons.HasFlag(X360Buttons.Down | X360Buttons.Up)) {
+                next.Buttons &= ~(X360Buttons.Down);
+                SOCDdu = true;
             }
 
             if (current.Buttons == next.Buttons) {
@@ -108,9 +122,21 @@ namespace XArcade_XInput {
             var next = new X360Controller(current);
             next.Buttons &= ~Button;
 
-            if (DidEmulateGuide && Button == X360Buttons.RightBumper || Button == X360Buttons.Start) {
-                next.Buttons &= ~(X360Buttons.Logo | X360Buttons.RightBumper | X360Buttons.Start);
-                DidEmulateGuide = false;
+            // if (DidEmulateGuide && Button == X360Buttons.RightBumper || Button == X360Buttons.Start) {
+            //     next.Buttons &= ~(X360Buttons.Logo | X360Buttons.RightBumper | X360Buttons.Start);
+            //     DidEmulateGuide = false;
+            // }
+
+            // SOCD Cleaner : left+right
+            if (SOCDlr && (Button == X360Buttons.Left || Button == X360Buttons.Right)) {
+                SOCDlr = false;
+                next.Buttons |= (Button == X360Buttons.Left) ? X360Buttons.Right : X360Buttons.Left;
+            }
+
+            // SOCD Cleaner : down+up
+            if (SOCDdu && (Button == X360Buttons.Down || Button == X360Buttons.Up)) {
+                SOCDdu = false;
+                next.Buttons |= (Button == X360Buttons.Down) ? X360Buttons.Up : X360Buttons.Down;
             }
 
             if (current.Buttons == next.Buttons) {
