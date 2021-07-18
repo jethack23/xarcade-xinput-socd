@@ -12,7 +12,7 @@ namespace XArcade_XInput {
         public event System.EventHandler OnParse;
 
         public string CurrentMappingName;
-        string DefaultMappingName = "X-Arcade 2 Player Analog";
+        string DefaultMappingName = "TEKKEN";
 
         public KeyboardMapper () {
             KeyboardHook = Gma.System.MouseKeyHook.Hook.GlobalEvents();

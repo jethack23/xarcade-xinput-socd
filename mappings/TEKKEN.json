@@ -1,0 +1,19 @@
+{
+    "Oemcomma": [0, "A"],
+    "L": [0, "B"],
+    "K": [0, "X"],
+    "O": [0, "Y"],
+
+    "D1": [0, "Start"],
+    "Q": [0, "Back"],
+    "P": [0, "LeftBumper"],
+    "OemOpenBrackets": [0, "RightBumper"],
+
+    "Space": [0, "Up"],
+    "E": [0, "Down"],
+    "W": [0, "Left"],
+    "F": [0, "Right"],
+
+    "Oem1": [0, "LeftTrigger"],
+    "Oem7": [0, "RightTrigger"]
+}
